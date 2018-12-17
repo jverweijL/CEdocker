@@ -1,0 +1,1 @@
+docker build -t base-ce-71-mysql:v1 MYSQL

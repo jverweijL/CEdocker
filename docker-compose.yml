@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+
+  adminer:
+    image: adminer:4.7
+    depends_on: 
+      - db
+    ports:
+      - 8888:8080
+
+  db:
+    image: base-ce-71-mysql:v1
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?err}
+
+  ce71:
+    image: liferay/portal:7.1.1-ga2
+    depends_on: 
+      - db
+    ports:
+      - 8080:8080
+    environment:
+      LIFERAY_LOCALES_PERIOD_ENABLED: "${LOCALES}"
+      LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_DRIVER_UPPERCASEC_LASS_UPPERCASEN_AME: com.mysql.jdbc.Driver
+      LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_URL: jdbc:mysql://db/lportal71?characterEncoding=UTF-8&dontTrackOpenResources=true&holdResultsOpenOverStatementClose=true&useFastDateParsing=false&useUnicode=true
+      LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_USERNAME: root
+      LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_PASSWORD: ${MYSQL_ROOT_PASSWORD:?err}
+      LIFERAY_INCLUDE-AND-OVERRIDE: portal-developer.properties
+      LIFERAY_WEB_PERIOD_SERVER_PERIOD_DISPLAY_PERIOD_NODE: "true"
